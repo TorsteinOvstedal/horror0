@@ -1,0 +1,1505 @@
+[gd_scene load_steps=20 format=3 uid="uid://dsmu5wsfuvtu7"]
+
+[ext_resource type="Script" path="res://levels/Demo.gd" id="1_ftng2"]
+[ext_resource type="PackedScene" uid="uid://btd8a8oeje0f6" path="res://components/Player/Player.tscn" id="1_qmv7q"]
+[ext_resource type="PackedScene" uid="uid://dyfckwpl0chha" path="res://components/Item/FlashLight/FlashLight.tscn" id="3_ruam0"]
+[ext_resource type="AudioStream" uid="uid://cmy4ypu3uhjhr" path="res://levels/ambient.mp3" id="4_bx6j5"]
+[ext_resource type="AudioStream" uid="uid://c23ue5jl2tr1a" path="res://levels/Lurking.mp3" id="4_mr45a"]
+[ext_resource type="AudioStream" path="res://components/Player/Walk.mp3" id="6_xc3vl"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4olgi"]
+albedo_color = Color(0.29219, 0.29219, 0.29219, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2kq8f"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_pp5r7"]
+material = SubResource("StandardMaterial3D_2kq8f")
+size = Vector3(100, 1, 100)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0mm18"]
+size = Vector3(100, 1, 100)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_331mq"]
+albedo_color = Color(0.380392, 0.380392, 0.380392, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_472rl"]
+material = SubResource("StandardMaterial3D_331mq")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_85yeo"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_r4uky"]
+material = SubResource("StandardMaterial3D_331mq")
+size = Vector3(2, 2, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0v1g7"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_px60k"]
+material = SubResource("StandardMaterial3D_331mq")
+size = Vector3(4, 4, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wu3l8"]
+size = Vector3(4, 4, 4)
+
+[sub_resource type="Animation" id="Animation_or4lb"]
+resource_name = "MusicStart"
+length = 10.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MusicPlayer/Soundtrack:volume_db")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 9.9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-30.0, 0.0]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MusicPlayer/Soundtrack")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7kjha"]
+_data = {
+"MusicStart": SubResource("Animation_or4lb")
+}
+
+[node name="Demo" type="Node"]
+script = ExtResource("1_ftng2")
+
+[node name="Game" type="Node3D" parent="."]
+
+[node name="Player" parent="Game" instance=ExtResource("1_qmv7q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.371094, 0)
+
+[node name="FlashLight" parent="Game" instance=ExtResource("3_ruam0")]
+transform = Transform3D(0.291421, 0, 0.956596, -0.0601318, 0.998022, 0.0183187, -0.954704, -0.0628603, 0.290844, -3.5, 1.04306, -8)
+
+[node name="Environment" type="Node" parent="Game"]
+
+[node name="Floor" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/Floor"]
+material_override = SubResource("StandardMaterial3D_4olgi")
+mesh = SubResource("BoxMesh_pp5r7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/Floor"]
+shape = SubResource("BoxShape3D_0mm18")
+
+[node name="Roof" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, 0)
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/Roof"]
+material_override = SubResource("StandardMaterial3D_4olgi")
+mesh = SubResource("BoxMesh_pp5r7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/Roof"]
+shape = SubResource("BoxShape3D_0mm18")
+
+[node name="SmallBox" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -43.5, 0.5, 0)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox2" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5, 3.5, 0)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox2"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox2"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox3" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5, 3.5, -6)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox3"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox3"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox4" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5, 3.5, -10)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox4"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox4"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox5" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5, 3.5, 5)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox5"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox5"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox6" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5, 3.5, -14)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox6"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox6"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox21" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.5, 3.5, -14)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox21"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox21"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox22" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 3.5, -14)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox22"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox22"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox23" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.5, 3.5, -14)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox23"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox23"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox24" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.5, 2.5, -14)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox24"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox24"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox25" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 2.5, -14)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox25"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox25"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox26" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.5, 2.5, -14)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox26"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox26"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox27" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5, 2.5, -14)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox27"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox27"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox7" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5, 3.5, -18)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox7"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox7"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox8" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5, 3.5, -26)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox8"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox8"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox9" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5, 3.5, -30)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox9"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox9"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox14" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, -5.5, 0.5, -30)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox14"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox14"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox15" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -5.5, 0.5, -41)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox15"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox15"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox16" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -5.5, 1.5, -41)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox16"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox16"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox17" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -24.5, 0.5, -36)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox17"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox17"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox18" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -24.5, 0.5, -23)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox18"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox18"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox19" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -3.5, 0.5, -8)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox19"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox19"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox20" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -34.5, 0.5, -15)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox20"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox20"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox10" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.5, -30)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox10"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox10"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox11" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 2.5, 1.5, -30)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox11"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox11"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox12" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(-0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, -0.258819, 2.5, 2.5, -30)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox12"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox12"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="SmallBox13" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(-0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, -0.965926, 2.5, 3.5, -30)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/SmallBox13"]
+mesh = SubResource("BoxMesh_472rl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/SmallBox13"]
+shape = SubResource("BoxShape3D_85yeo")
+
+[node name="MediumBox" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45, 1, 0)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/MediumBox"]
+mesh = SubResource("BoxMesh_r4uky")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/MediumBox"]
+shape = SubResource("BoxShape3D_0v1g7")
+
+[node name="MediumBox2" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27, 1, 0)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/MediumBox2"]
+mesh = SubResource("BoxMesh_r4uky")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/MediumBox2"]
+shape = SubResource("BoxShape3D_0v1g7")
+
+[node name="MediumBox10" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 1, -35)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/MediumBox10"]
+mesh = SubResource("BoxMesh_r4uky")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/MediumBox10"]
+shape = SubResource("BoxShape3D_0v1g7")
+
+[node name="MediumBox11" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, -9, 3, -35)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/MediumBox11"]
+mesh = SubResource("BoxMesh_r4uky")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/MediumBox11"]
+shape = SubResource("BoxShape3D_0v1g7")
+
+[node name="MediumBox7" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27, 3, 0)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/MediumBox7"]
+mesh = SubResource("BoxMesh_r4uky")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/MediumBox7"]
+shape = SubResource("BoxShape3D_0v1g7")
+
+[node name="MediumBox8" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27, 3, 2)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/MediumBox8"]
+mesh = SubResource("BoxMesh_r4uky")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/MediumBox8"]
+shape = SubResource("BoxShape3D_0v1g7")
+
+[node name="MediumBox9" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27, 3, 4)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/MediumBox9"]
+mesh = SubResource("BoxMesh_r4uky")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/MediumBox9"]
+shape = SubResource("BoxShape3D_0v1g7")
+
+[node name="MediumBox3" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27, 1, 5)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/MediumBox3"]
+mesh = SubResource("BoxMesh_r4uky")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/MediumBox3"]
+shape = SubResource("BoxShape3D_0v1g7")
+
+[node name="MediumBox4" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 1, 5)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/MediumBox4"]
+mesh = SubResource("BoxMesh_r4uky")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/MediumBox4"]
+shape = SubResource("BoxShape3D_0v1g7")
+
+[node name="MediumBox5" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 3, 5)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/MediumBox5"]
+mesh = SubResource("BoxMesh_r4uky")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/MediumBox5"]
+shape = SubResource("BoxShape3D_0v1g7")
+
+[node name="MediumBox6" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 5, 5)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/MediumBox6"]
+mesh = SubResource("BoxMesh_r4uky")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/MediumBox6"]
+shape = SubResource("BoxShape3D_0v1g7")
+
+[node name="LargeBox" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48, 2, 0)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox2" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.01514, 2, 0)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox2"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox2"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox3" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.01514, 2, -4)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox3"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox3"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox4" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.01514, 2, -8)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox4"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox4"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox5" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.01514, 2, -12)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox5"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox5"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox6" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.01514, 2, -12)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox6"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox6"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox7" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.984859, 2, -12)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox7"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox7"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox8" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.98486, 2, -12)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox8"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox8"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox9" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.98486, 2, -12)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox9"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox9"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox78" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.98486, 2, -16)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox78"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox78"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox79" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.98486, 2, -20)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox79"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox79"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox80" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.98486, 2, -24)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox80"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox80"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox81" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.98486, 2, -28)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox81"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox81"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox82" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.98486, 2, -32)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox82"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox82"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox83" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.98486, 2, -36)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox83"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox83"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox84" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 8.98486, 2, -40)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox84"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox84"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox85" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 8.98486, 2, -44)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox85"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox85"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox86" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 4.98486, 2, -44)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox86"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox86"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox87" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 1.98486, 2, -44)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox87"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox87"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox10" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.98486, 2, -8)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox10"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox10"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox11" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.98486, 2, -4)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox11"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox11"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox12" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.98486, 2, 0)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox12"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox12"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox13" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.98486, 2, 4)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox13"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox13"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox14" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.98486, 2, 8)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox14"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox14"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox15" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.98486, 2, 8)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox15"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox15"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox16" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.984859, 2, 8)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox16"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox16"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox17" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.01514, 2, 8)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox17"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox17"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox18" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.01514, 2, 8)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox18"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox18"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox19" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.0151, 2, 8)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox19"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox19"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox20" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.0151, 2, 8)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox20"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox20"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox21" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.0151, 2, 4)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox21"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox21"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox22" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.0151, 2, 0)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox22"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox22"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox23" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.0151, 2, -6)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox23"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox23"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox24" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.0151, 2, -10)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox24"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox24"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox25" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.0151, 2, -14)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox25"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox25"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox26" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.0151, 2, -18)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox26"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox26"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox27" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.01514, 2, -18)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox27"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox27"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox28" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.01514, 2, -22)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox28"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox28"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox29" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.01514, 2, -26)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox29"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox29"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox30" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.01514, 2, -26)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox30"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox30"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox31" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.01514, 2, -30)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox31"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox31"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox32" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.01514, 2, -34)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox32"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox32"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox33" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.01514, 2, -38)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox33"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox33"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox34" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.01514, 2, -42)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox34"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox34"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox35" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.01514, 2, -46)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox35"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox35"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox36" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.01514, 2, -46)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox36"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox36"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox37" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.01514, 2, -46)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox37"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox37"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox38" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.0151, 2, -46)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox38"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox38"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox39" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.0151, 2, -46)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox39"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox39"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox40" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.0151, 2, -42)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox40"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox40"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox41" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.0151, 2, -38)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox41"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox41"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox42" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.0151, 2, -42)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox42"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox42"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox43" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.0151, 2, -42)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox43"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox43"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox44" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.0151, 2, -42)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox44"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox44"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox45" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.0151, 2, -38)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox45"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox45"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox46" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.0151, 2, -38)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox46"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox46"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox47" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.0151, 2, -38)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox47"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox47"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox48" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.0151, 2, -34)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox48"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox48"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox49" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.0151, 2, -30)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox49"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox49"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox50" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.0151, 2, -26)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox50"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox50"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox51" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.0151, 2, -26)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox51"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox51"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox52" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.0151, 2, -26)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox52"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox52"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox53" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.0151, 2, -26)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox53"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox53"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox54" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.0151, 2, -30)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox54"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox54"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox55" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.0151, 2, -18)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox55"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox55"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox56" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.0151, 2, -18)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox56"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox56"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox57" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.0151, 2, -26)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox57"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox57"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox58" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.0151, 2, -14)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox58"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox58"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox59" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.0151, 2, -10)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox59"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox59"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox60" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.0151, 2, -6)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox60"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox60"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox61" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.0151, 2, -6)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox61"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox61"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox67" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.0151, 2, -2)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox67"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox67"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox68" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.0151, 2, 2)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox68"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox68"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox69" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.0151, 2, 6)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox69"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox69"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox70" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.0151, 2, 10)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox70"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox70"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox71" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.0151, 2, 14)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox71"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox71"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox72" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.0151, 2, 14)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox72"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox72"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox73" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.0151, 2, 14)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox73"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox73"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox74" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.0151, 2, 14)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox74"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox74"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox75" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.0151, 2, 14)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox75"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox75"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox76" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.0151, 2, 14)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox76"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox76"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox77" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.0151, 2, 11)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox77"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox77"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox62" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.0151, 2, -6)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox62"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox62"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox63" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.0151, 2, -10)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox63"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox63"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox64" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.0151, 2, -22)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox64"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox64"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox65" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.0151, 2, -18)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox65"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox65"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="LargeBox66" type="StaticBody3D" parent="Game/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.0151, 2, -14)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Environment/LargeBox66"]
+mesh = SubResource("BoxMesh_px60k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Environment/LargeBox66"]
+shape = SubResource("BoxShape3D_wu3l8")
+
+[node name="Ambient" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_bx6j5")
+volume_db = -20.0
+autoplay = true
+bus = &"Ambient"
+
+[node name="MusicPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_7kjha")
+}
+
+[node name="Soundtrack" type="AudioStreamPlayer" parent="MusicPlayer"]
+stream = ExtResource("4_mr45a")
+volume_db = -30.0
+bus = &"Music"
+
+[node name="WalkSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_xc3vl")

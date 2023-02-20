@@ -1,0 +1,126 @@
+[gd_scene load_steps=12 format=3 uid="uid://btd8a8oeje0f6"]
+
+[ext_resource type="Script" path="res://components/Player/Player.gd" id="1_khvyk"]
+[ext_resource type="Texture2D" uid="uid://iq76insb1krl" path="res://components/Player/Cursor/cursor3.png" id="2_6j8gu"]
+[ext_resource type="AudioStream" uid="uid://br7po0dri7rrc" path="res://components/Player/Walk.mp3" id="3_l2jgn"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_vtqwl"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vy3jj"]
+height = 1.3
+
+[sub_resource type="Environment" id="Environment_78r8m"]
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 0.07
+tonemap_mode = 3
+fog_density = 0.005
+fog_height = 1.0
+fog_height_density = 0.05
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.025
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g5lwe"]
+transparency = 1
+cull_mode = 2
+depth_draw_mode = 2
+no_depth_test = true
+shading_mode = 0
+specular_mode = 2
+disable_ambient_light = true
+albedo_color = Color(1, 1, 1, 0.568627)
+albedo_texture = ExtResource("2_6j8gu")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_piawk"]
+material = SubResource("StandardMaterial3D_g5lwe")
+size = Vector2(1.25, 1.25)
+
+[sub_resource type="Animation" id="Animation_0obno"]
+resource_name = "Crouch"
+length = 0.3
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 1.8, -0.5, 0.3, 1, 0, 1.2, -0.5)
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Body")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 1.3675, 0, 0.3, 1, 0, 0.9, 0)
+
+[sub_resource type="Animation" id="Animation_djwuf"]
+resource_name = "Stan"
+length = 0.3
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 1.2, -0.5, 0.3, 1, 0, 1.8, -0.5)
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Body")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 0.9, 0, 0.3, 1, 0, 1.3675, 0)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_25ipj"]
+_data = {
+"Crouch": SubResource("Animation_0obno"),
+"Stand": SubResource("Animation_djwuf")
+}
+
+[node name="Player" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 9
+script = ExtResource("1_khvyk")
+walk_speed = 2.25
+crouch_speed = 1.0
+run_speed = 4.0
+can_jump = true
+jump_speed = 4.0
+throw_force = Vector2(7, 3)
+
+[node name="Feet" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("SphereShape3D_vtqwl")
+
+[node name="Body" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3675, 0)
+shape = SubResource("CapsuleShape3D_vy3jj")
+
+[node name="Pivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, -0.5)
+
+[node name="Camera3D" type="Camera3D" parent="Pivot"]
+environment = SubResource("Environment_78r8m")
+
+[node name="Aim" type="RayCast3D" parent="Pivot"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+target_position = Vector3(0, -4, 0)
+collision_mask = 4
+
+[node name="Cursor" type="MeshInstance3D" parent="Pivot/Aim"]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, -1.30896, 9.53674e-07)
+layers = 3
+mesh = SubResource("PlaneMesh_piawk")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_25ipj")
+}
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_l2jgn")
+volume_db = -20.0
+autoplay = true
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+target_position = Vector3(0, 1, 0)

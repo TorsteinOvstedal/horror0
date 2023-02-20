@@ -1,0 +1,121 @@
+[gd_scene load_steps=2 format=3 uid="uid://xt6ym16uhxl5"]
+
+[sub_resource type="GDScript" id="GDScript_w56ml"]
+script/source = "#@tool
+
+class_name Inventory
+
+extends Control
+
+@onready var grid := $GridContainer
+
+#@export_range(0, 16, 1, \"or_greater\")
+#var capacity := 0: 
+#	set(value):
+#		= set_capacity 
+#	get:
+#		return get_capacity()
+#
+#
+#@export_range(0, 4, 1, \"or_greater\")
+#var columns := 2:
+#	set(value):
+#		grid.columns = value
+#	get:
+#		return grid.columns
+#
+## Export setters can be called before _ready, so grid is UD.
+## https://github.com/godotengine/godot/issues/19065
+#
+#func get_capacity() -> int:
+#	return grid.get_child_count()
+#
+#func set_capacity(target: int) -> void:
+#	assert(target >= 0)
+#
+#	if Engine.is_editor_hint():
+#		print(\"Editor\")
+#
+#	if target < get_capacity():
+#		shrink(target)
+#	else:
+#		expand(target)
+#
+#	call_deferred(\"_draw\")
+
+func expand(target: int) -> void:	
+	var length := grid.get_child_count()
+	
+	while length < target:
+			var cell := _create_cell()
+			grid.add_child(cell)
+			length += 1
+
+func shrink(target: int) -> void:
+	assert(target >= 0)
+	
+	var length := grid.get_child_count()
+	
+	while length > target:
+		var cell := grid.get_child(length - 1)	
+		grid.remove_child.call_deferred(cell)
+		cell.queue_free.call_deferred()
+		length -= 1
+
+func _create_cell(w: float = 64, h: float = 64) -> Control:
+	var cr = ColorRect.new()
+	cr.custom_minimum_size = Vector2(w, h)
+	cr.color[0] = 1.0
+	cr.color[1] = 0.5
+	cr.color[2] = 0.3
+	cr.color[3] = 1.0
+	return cr
+
+func _ready() -> void:
+	pass	
+"
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_w56ml")
+
+[node name="GridContainer" type="GridContainer" parent="Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+columns = 7
+
+[node name="ColorRect" type="ColorRect" parent="Control/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="ColorRect2" type="ColorRect" parent="Control/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="ColorRect3" type="ColorRect" parent="Control/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="ColorRect4" type="ColorRect" parent="Control/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="ColorRect5" type="ColorRect" parent="Control/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
